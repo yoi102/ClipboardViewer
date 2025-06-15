@@ -23,6 +23,7 @@
     <mah:MetroWindow.LeftWindowCommands>
         <mah:WindowCommands>
             <Button  Content="{md:PackIcon Kind=Github, Size=20}"
+                     Click="IconClicked"
                      Width="35"
                      Height="22" />
         </mah:WindowCommands>

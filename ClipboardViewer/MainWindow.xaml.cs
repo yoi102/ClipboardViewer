@@ -2,6 +2,7 @@
 using Commons.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace ClipboardViewer;
 
@@ -39,5 +40,11 @@ public partial class MainWindow
 
             Close();  // 程序关闭
         }
+    }
+
+    private void IconClicked(object sender, System.Windows.RoutedEventArgs e)
+    {
+        Process.Start(new ProcessStartInfo("https://github.com/yoi102/ClipboardViewer") { UseShellExecute = true });
+
     }
 }
