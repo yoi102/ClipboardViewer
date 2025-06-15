@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="ClipboardViewer.Views.Dialogs.MessageDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             xmlns:r="clr-namespace:Resources;assembly=Resources"
+             d:DesignWidth="800">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition MinHeight="30" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Name="HeaderTextBlock"
+                   Margin="0 8 0 8"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   FontStretch="ExtraCondensed" />
+        <TextBlock Name="MessageTextBlock"
+                   Grid.Row="1"
+                   Margin="0 8 0 8"
+                   FontStretch="ExtraCondensed" />
+
+        <Button Grid.Row="2"
+                Margin="0 20 0 0"
+                Width="80"
+                IsCancel="True"
+                IsDefault="False"
+                Content="{I18N {x:Static r:LangKeys.Ok}}"
+                Command="{x:Static md:DialogHost.CloseDialogCommand}" />
+    </Grid>
+</UserControl>

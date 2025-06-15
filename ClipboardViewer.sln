@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36203.30
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardViewer", "ClipboardViewer\ClipboardViewer.csproj", "{F8E58F19-D9EA-4E89-8A27-7A413AB35742}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardViewer.ViewModel", "ClipboardViewer.ViewModel\ClipboardViewer.ViewModel.csproj", "{C3F1861B-BD7B-4F4D-A745-C6B77B1099C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardViewer.wpf.UserControls", "ClipboardViewer.wpf.UserControls\ClipboardViewer.wpf.UserControls.csproj", "{C123AD01-E952-498B-A064-DCCE233D3A1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Resources.csproj", "{2E7EB9F1-37B7-4AB3-88F1-00D5E4CF5008}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons", "Commons\Commons.csproj", "{39BFE4B0-5627-4B3B-9D22-D92CDEF2695B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExceptionHandling", "ExceptionHandling\ExceptionHandling.csproj", "{491E3E9A-3601-4A09-A4C8-D38D23183C31}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8E58F19-D9EA-4E89-8A27-7A413AB35742}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8E58F19-D9EA-4E89-8A27-7A413AB35742}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8E58F19-D9EA-4E89-8A27-7A413AB35742}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8E58F19-D9EA-4E89-8A27-7A413AB35742}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3F1861B-BD7B-4F4D-A745-C6B77B1099C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3F1861B-BD7B-4F4D-A745-C6B77B1099C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3F1861B-BD7B-4F4D-A745-C6B77B1099C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3F1861B-BD7B-4F4D-A745-C6B77B1099C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C123AD01-E952-498B-A064-DCCE233D3A1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C123AD01-E952-498B-A064-DCCE233D3A1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C123AD01-E952-498B-A064-DCCE233D3A1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C123AD01-E952-498B-A064-DCCE233D3A1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E7EB9F1-37B7-4AB3-88F1-00D5E4CF5008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E7EB9F1-37B7-4AB3-88F1-00D5E4CF5008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E7EB9F1-37B7-4AB3-88F1-00D5E4CF5008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E7EB9F1-37B7-4AB3-88F1-00D5E4CF5008}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39BFE4B0-5627-4B3B-9D22-D92CDEF2695B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39BFE4B0-5627-4B3B-9D22-D92CDEF2695B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39BFE4B0-5627-4B3B-9D22-D92CDEF2695B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39BFE4B0-5627-4B3B-9D22-D92CDEF2695B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{491E3E9A-3601-4A09-A4C8-D38D23183C31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{491E3E9A-3601-4A09-A4C8-D38D23183C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{491E3E9A-3601-4A09-A4C8-D38D23183C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{491E3E9A-3601-4A09-A4C8-D38D23183C31}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BC7C8C0A-5447-4FA8-A2D2-891F6A4986EE}
+	EndGlobalSection
+EndGlobal

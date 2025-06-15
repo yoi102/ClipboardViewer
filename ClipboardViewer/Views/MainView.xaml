@@ -1,0 +1,170 @@
+﻿<UserControl x:Class="ClipboardViewer.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ClipboardViewer.Views"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:yr="https://github.com/yoi102/xaml/controls"
+             xmlns:cv="clr-namespace:ClipboardViewer.Converters"
+             xmlns:uc="clr-namespace:ClipboardViewer.UserControls"
+             xmlns:tm="clr-namespace:ClipboardViewer.TemplateSelectors"
+             xmlns:viewmodels="clr-namespace:ClipboardViewer.ViewModel.ViewModels;assembly=ClipboardViewer.ViewModel"
+             d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+    <md:DialogHost Identifier="MainView">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <ToolBar ClipToBounds="True"
+                         Style="{StaticResource MaterialDesignToolBar}">
+                    <Button Content="{md:PackIcon Kind=ClipboardPlus}"
+                            Command="{Binding AddClipboardDataCommand}" />
+                    <Button Content="{md:PackIcon Kind=Broom}"
+                            Command="{Binding ClearClipboardDataCommand}" />
+
+                </ToolBar>
+                <ListBox Grid.Row="1"
+                         md:ScrollViewerAssist.IgnorePadding="True"
+                         md:ScrollViewerAssist.PaddingMode="Content"
+                         SelectedIndex="0"
+                         AlternationCount="9999"
+                         ItemsSource="{Binding ClipboardDataCollection}"
+                         SelectedItem="{Binding SelectedClipboardData}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <yr:ReversibleStackPanel ReverseOrder="True"
+                                                     VerticalAlignment="Top" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <!--序号-->
+                                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=(ItemsControl.AlternationIndex)}"
+                                           Margin="4,0"
+                                           Width="30" />
+
+                                <!--内容-->
+                                <TextBlock Text="{Binding CreateAt, StringFormat=HH:mm:ss.fff yyyy-MM-dd }" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="120" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <ListBox md:ScrollViewerAssist.IgnorePadding="True"
+                         md:ScrollViewerAssist.PaddingMode="Default"
+                         md:ScrollViewerAssist.ShowSeparators="False"
+                         md:ScrollViewerAssist.BubbleVerticalScroll="True"
+                         SelectedIndex="0"
+                         ItemsSource="{Binding SelectedClipboardData.Items}"
+                         SelectedItem="{Binding SelectedClipboardDataItem}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <md:Card Content="{Binding Format}"
+                                     Background="{Binding .,Converter={x:Static cv:ClipboardDataItemToBrushConverter.Instance}}"
+                                     Padding="5" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <GroupBox Grid.Row="1"
+                          md:ElevationAssist.Elevation="Dp16"
+                          BorderThickness="0">
+                    <GroupBox.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Format:"
+                                   Padding="0" />
+                            <TextBox   Padding="0"
+                                       Margin="5 0 0 0"
+                                       Width="120"
+                                       Text="{Binding SelectedClipboardDataItem.Format,Mode=OneWay}"
+                                       IsReadOnly="True" />
+
+                            <Label Content="Object Type:"
+                                   Padding="0"
+                                   Margin="20 0 0 0" />
+                            <TextBox Padding="0"
+                                     Margin="5 0 0 0"
+                                     Text="{Binding SelectedClipboardDataItem.Content,Mode=OneWay,Converter={x:Static cv:ObjectTypeToStringConverter.Instance}}"
+                                     IsReadOnly="True" />
+
+                        </StackPanel>
+
+                    </GroupBox.Header>
+                    <Grid>
+                        <Grid.Resources>
+                            <!-- 针对 string 的显示模板 -->
+                            <DataTemplate x:Key="StringTemplateKey">
+                                <TextBox Text="{Binding .,Mode=OneWay,Converter={x:Static cv:ObjectToStringConverter.Instance}}"
+                                         AcceptsReturn="True"
+                                         TextWrapping="Wrap"
+                                         VerticalScrollBarVisibility="Auto" />
+                            </DataTemplate>
+                            <DataTemplate x:Key="ImageTemplateKey">
+                                <uc:cImageViewer Source="{Binding .,Mode=OneWay,Converter={x:Static cv:ObjectToBitmapSourceConverter.Instance}}" />
+                            </DataTemplate>
+
+                            <DataTemplate x:Key="HtmlTemplateKey">
+                                <uc:HtmlViewer Source="{Binding .,Mode=OneWay,Converter={x:Static cv:ObjectToStringConverter.Instance}}" />
+                            </DataTemplate>
+
+                            <DataTemplate x:Key="RtfTemplateKey">
+                                <uc:RtfViewer Source="{Binding .,Mode=OneWay,Converter={x:Static cv:ObjectToStringConverter.Instance}}" />
+                            </DataTemplate>
+                            <tm:ClipboardDataItemTemplateSelector x:Key="ClipboardDataItemTemplateSelectorKey"
+                                                                  RtfTemplate="{StaticResource RtfTemplateKey}"
+                                                                  HtmlTemplate="{StaticResource HtmlTemplateKey}"
+                                                                  StringTemplate="{StaticResource StringTemplateKey}"
+                                                                  ImageTemplate="{StaticResource ImageTemplateKey}" />
+                        </Grid.Resources>
+                        <ContentControl Content="{Binding SelectedClipboardDataItem.Content}"
+                                        ContentTemplateSelector="{StaticResource ClipboardDataItemTemplateSelectorKey}"
+                                        Visibility="{Binding SelectedClipboardDataItem.Error,Converter={x:Static cv:DefaultToVisibilityConverter.CollapsedInstance}}" />
+                        <Grid  Visibility="{Binding SelectedClipboardDataItem.Error,Converter={x:Static cv:DefaultToVisibilityConverter.NotCollapsedInstance}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Exception Type:" />
+                                <TextBox Margin="5 0 0 0"
+                                         Text="{Binding SelectedClipboardDataItem.Error,Mode=OneWay,Converter={x:Static cv:ObjectTypeToStringConverter.Instance}}"
+                                         IsReadOnly="False" />
+                            </StackPanel>
+
+                            <TextBox Grid.Row="1"
+                                     Text="{Binding SelectedClipboardDataItem.Error.Message,Mode=OneWay}"
+                                     IsReadOnly="False" />
+                        </Grid>
+                    </Grid>
+
+                </GroupBox>
+
+            </Grid>
+        </Grid>
+    </md:DialogHost>
+</UserControl>

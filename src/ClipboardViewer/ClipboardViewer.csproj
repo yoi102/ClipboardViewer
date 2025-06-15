@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net5.0-windows;net48</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
+    <WarningsAsErrors>$(WarningsAsErrors);CS8600;CS8602;CS8603;CS8618;CS8625</WarningsAsErrors>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <Description>查看剪贴板中格式无关的数据。</Description>
+    <Product>剪贴板查看器</Product>
+    <Company>walterlv</Company>
+    <Authors>walterlv</Authors>
+    <Version>3.1.0</Version>
+    <PackageId>Walterlv.ClipboardViewer</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>© 2014-2019 walterlv, all rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/walterlv/ClipboardViewer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/walterlv/ClipboardViewer.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <ApplicationIcon />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="**\*.ico" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <FluentDesignProject>..\Walterlv.FluentDesign\Walterlv.FluentDesign\</FluentDesignProject>
+    <RootNamespace>Walterlv.Clipboards</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(FluentDesignProject)**\*.cs" Exclude="$(FluentDesignProject)bin\**;$(FluentDesignProject)obj\**" Link="Themes\%(FileName).cs" DependentUpon="%(Filename)" />
+    <Page Include="$(FluentDesignProject)**\*.xaml" Exclude="$(FluentDesignProject)bin\**;$(FluentDesignProject)obj\**" Link="Themes\%(FileName).xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="..\Walterlv.FluentDesign\Walterlv.FluentDesign\Themes\Window.Universal.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+</Project>

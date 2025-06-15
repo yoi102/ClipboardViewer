@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Assists\" />
+    <Folder Include="Styles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.11.0.20250507" />
+  </ItemGroup>
+
+</Project>
