@@ -145,6 +145,10 @@
     <value>English</value>
     <comment>English</comment>
   </data>
+  <data name="Fit" xml:space="preserve">
+    <value>Fit</value>
+    <comment>Fit</comment>
+  </data>
   <data name="Japanese" xml:space="preserve">
     <value>Japanese</value>
     <comment>Japanese</comment>
@@ -152,6 +156,18 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
     <comment>Ok</comment>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>Save Image As...</value>
+    <comment>Save Image As...</comment>
+  </data>
+  <data name="ShowImageInNewWindow" xml:space="preserve">
+    <value>Show Image in New Window</value>
+    <comment>Show Image in New Window</comment>
+  </data>
+  <data name="ShowProperty" xml:space="preserve">
+    <value>Show Property</value>
+    <comment>Show Property</comment>
   </data>
   <data name="Source" xml:space="preserve">
     <value>Source</value>

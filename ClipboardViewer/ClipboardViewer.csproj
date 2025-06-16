@@ -10,16 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="ClipboardViewer.ico" />
+    <Content Include="ClipboardViewer.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Antelcat.I18N.WPF" Version="1.1.0" />
-    <PackageReference Include="MahApps.Metro" Version="3.0.0-rc0516" />
+    <PackageReference Include="MahApps.Metro" Version="3.0.0-alpha0490" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.2-ci998" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-preview.5.25277.114" />
-    <PackageReference Include="OpenCvSharp4.Windows" Version="4.11.0.20250507" />
-    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.11.0.20250507" />
     <PackageReference Include="System.Drawing.Common" Version="10.0.0-preview.5.25277.114" />
   </ItemGroup>
 

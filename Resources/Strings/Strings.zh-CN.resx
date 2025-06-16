@@ -138,11 +138,23 @@
   <data name="English" xml:space="preserve">
     <value>英文</value>
   </data>
+  <data name="Fit" xml:space="preserve">
+    <value>适应窗口</value>
+  </data>
   <data name="Japanese" xml:space="preserve">
     <value>日文</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
+  </data>
+  <data name="SaveAs" xml:space="preserve">
+    <value>另存为</value>
+  </data>
+  <data name="ShowImageInNewWindow" xml:space="preserve">
+    <value>在新窗口中显示图片</value>
+  </data>
+  <data name="ShowProperty" xml:space="preserve">
+    <value>显示属性 </value>
   </data>
   <data name="Source" xml:space="preserve">
     <value>源</value>

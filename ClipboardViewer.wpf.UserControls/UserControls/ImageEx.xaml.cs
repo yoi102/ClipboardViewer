@@ -1,8 +1,4 @@
-﻿using Microsoft.Win32;
-using OpenCvSharp;
-using OpenCvSharp.WpfExtensions;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -27,9 +23,6 @@ public partial class ImageEx : UserControl
                             null),
                     null);
 
-    public static readonly DependencyProperty TitleProperty =
-DependencyProperty.Register("Title", typeof(string), typeof(ImageEx), new PropertyMetadata(""));
-
     private byte[,]? imageData;
 
     private Vec3b[,]? imageData3b;
@@ -47,38 +40,29 @@ DependencyProperty.Register("Title", typeof(string), typeof(ImageEx), new Proper
         InitializeComponent();
     }
 
-    public ImageSource ImageSource
+    public ImageSource? ImageSource
     {
-        get { return (ImageSource)GetValue(ImageSourceProperty); }
+        get { return (ImageSource?)GetValue(ImageSourceProperty); }
         set { SetValue(ImageSourceProperty, value); }
-    }
-
-    public string Title
-    {
-        get { return (string)GetValue(TitleProperty); }
-        set { SetValue(TitleProperty, value); }
     }
 
     private static void OnImageSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var imageEx = (ImageEx)d;
-        if (e.NewValue != null)
+        if (e.NewValue is ImageSource image)
         {
-            //ImageEx!.ImageSource = (ImageSource)e.NewValue;
-            imageEx.image.Source = (ImageSource)e.NewValue;
+            imageEx.image.Source = image;
             imageEx.GetImageSourceData();
         }
         else
         {
             imageEx.image.Source = null;
-            //ImageEx!.ImageSource = null;
         }
     }
 
     private void BackFrame_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.MiddleButton == MouseButtonState.Pressed)
-        //e.RightButton == MouseButtonState.Pressed)
         {
             mouseDownCount += 1;
             DispatcherTimer timer = new();
@@ -99,42 +83,97 @@ DependencyProperty.Register("Title", typeof(string), typeof(ImageEx), new Proper
 
     private void GetImageSourceData()
     {
-        if (ImageSource is BitmapSource image)
+        if (ImageSource is BitmapSource bmp)
         {
-            using Mat mat = image.ToMat();
+            int width = bmp.PixelWidth;
+            int height = bmp.PixelHeight;
+            int stride = (width * bmp.Format.BitsPerPixel + 7) / 8;
+            byte[] pixels = new byte[height * stride];
+            bmp.CopyPixels(pixels, stride, 0);
 
-            // 如果是4通道，先转成3通道
-            if (mat.Channels() == 4)
+            // 处理像素格式
+            if (bmp.Format == PixelFormats.Gray8) // 1通道灰度
             {
-                using Mat bgrMat = new();
-                Cv2.CvtColor(mat, bgrMat, ColorConversionCodes.BGRA2BGR);
-                // 后续逻辑以3通道处理
-                bgrMat.GetRectangularArray(out Vec3b[,] vec3Ds);
-                imageData3b = vec3Ds;
-                maxY = imageData3b.GetLength(0);
-                maxX = imageData3b.GetLength(1);
-                imageData = null;
-                GrayPanel.Visibility = Visibility.Collapsed;
-                RGBPanel.Visibility = Visibility.Visible;
-            }
-            else if (mat.Channels() == 3)
-            {
-                mat.GetRectangularArray(out Vec3b[,] vec3Ds);
-                imageData3b = vec3Ds;
-                maxY = imageData3b.GetLength(0);
-                maxX = imageData3b.GetLength(1);
-                imageData = null;
-                GrayPanel.Visibility = Visibility.Collapsed;
-                RGBPanel.Visibility = Visibility.Visible;
-            }
-            else if (mat.Channels() == 1)
-            {
-                mat.GetRectangularArray(out byte[,] vecDs);
-                imageData = vecDs;
+                imageData = new byte[height, width];
                 imageData3b = null;
-                maxY = 0;
-                maxX = 0;
+                for (int y = 0; y < height; y++)
+                    for (int x = 0; x < width; x++)
+                        imageData[y, x] = pixels[y * stride + x];
+
+                maxY = height;
+                maxX = width;
                 GrayPanel.Visibility = Visibility.Visible;
+                RGBPanel.Visibility = Visibility.Collapsed;
+            }
+            else if (bmp.Format == PixelFormats.Bgr24) // 3通道
+            {
+                imageData = null;
+                imageData3b = new Vec3b[height, width];
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        int idx = y * stride + x * 3;
+                        byte b = pixels[idx];
+                        byte g = pixels[idx + 1];
+                        byte r = pixels[idx + 2];
+                        imageData3b[y, x] = new Vec3b(b, g, r);
+                    }
+                }
+                maxY = height;
+                maxX = width;
+                GrayPanel.Visibility = Visibility.Collapsed;
+                RGBPanel.Visibility = Visibility.Visible;
+            }
+            else if (bmp.Format == PixelFormats.Bgr32) // 4字节 BGR，不含Alpha
+            {
+                imageData = null;
+                imageData3b = new Vec3b[height, width];
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        int idx = y * stride + x * 4;
+                        byte b = pixels[idx];
+                        byte g = pixels[idx + 1];
+                        byte r = pixels[idx + 2];
+                        // 第4字节通常是填充位，可忽略
+                        imageData3b[y, x] = new Vec3b(b, g, r);
+                    }
+                }
+                maxY = height;
+                maxX = width;
+                GrayPanel.Visibility = Visibility.Collapsed;
+                RGBPanel.Visibility = Visibility.Visible;
+            }
+            else if (bmp.Format == PixelFormats.Bgra32) // 4通道，转3通道
+            {
+                imageData = null;
+                imageData3b = new Vec3b[height, width];
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        int idx = y * stride + x * 4;
+                        byte b = pixels[idx];
+                        byte g = pixels[idx + 1];
+                        byte r = pixels[idx + 2];
+                        // 忽略Alpha
+                        imageData3b[y, x] = new Vec3b(b, g, r);
+                    }
+                }
+                maxY = height;
+                maxX = width;
+                GrayPanel.Visibility = Visibility.Collapsed;
+                RGBPanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // 其他格式（如Pbgra32等），可自行补充
+                imageData = null;
+                imageData3b = null;
+                maxY = maxX = 0;
+                GrayPanel.Visibility = Visibility.Collapsed;
                 RGBPanel.Visibility = Visibility.Collapsed;
             }
         }
@@ -142,26 +181,9 @@ DependencyProperty.Register("Title", typeof(string), typeof(ImageEx), new Proper
 
     private void Image_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.MiddleButton == MouseButtonState.Pressed)
-        //e.RightButton == MouseButtonState.Pressed)
+        if (e.LeftButton == MouseButtonState.Pressed)
         {
             middleButtonClickedPosition = e.GetPosition((IInputElement)e.Source);
-
-            //mouseDownCount += 1;
-            //DispatcherTimer timer = new DispatcherTimer();
-            //timer.Interval = new TimeSpan(0, 0, 0, 0, 300);
-            //timer.Tick += (s, e1) => { timer.IsEnabled = false; mouseDownCount = 0; };
-            //timer.IsEnabled = true;
-            //if (mouseDownCount % 2 == 0)
-            //{
-            //    timer.IsEnabled = false;
-            //    mouseDownCount = 0;
-
-            //    var group = (TransformGroup)image.RenderTransform;
-            //    group.Children[0] = new ScaleTransform();
-            //    group.Children[1] = new TranslateTransform();
-
-            //}
         }
     }
 
@@ -175,6 +197,9 @@ DependencyProperty.Register("Title", typeof(string), typeof(ImageEx), new Proper
 
         //获取控件大小
         Image imageControl = (Image)(IInputElement)e.Source;
+
+        if (ImageSource is null)
+            return;
 
         double xRatio = ImageSource.Width / imageControl.ActualWidth;
         double yRatio = ImageSource.Height / imageControl.ActualHeight;
@@ -204,7 +229,7 @@ DependencyProperty.Register("Title", typeof(string), typeof(ImageEx), new Proper
         }
 
         //当中键按下，移动图片
-        if (e.MiddleButton == MouseButtonState.Pressed)
+        if (e.LeftButton == MouseButtonState.Pressed)
         {
             Image im = (Image)sender;
             var group = (TransformGroup)im.RenderTransform;
@@ -251,5 +276,17 @@ DependencyProperty.Register("Title", typeof(string), typeof(ImageEx), new Proper
         var group = (TransformGroup)im.RenderTransform;
         group.Children[0] = new ScaleTransform();
         group.Children[1] = new TranslateTransform();
+    }
+}
+
+public struct Vec3b
+{
+    public byte Item0;
+    public byte Item1;
+    public byte Item2;
+
+    public Vec3b(byte b, byte g, byte r)
+    {
+        Item0 = b; Item1 = g; Item2 = r;
     }
 }

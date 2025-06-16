@@ -124,6 +124,15 @@ namespace Resources.Strings {
         }
         
         /// <summary>
+        ///   查找类似 Fit 的本地化字符串。
+        /// </summary>
+        public static string Fit {
+            get {
+                return ResourceManager.GetString("Fit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Japanese 的本地化字符串。
         /// </summary>
         public static string Japanese {
@@ -138,6 +147,33 @@ namespace Resources.Strings {
         public static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save Image As... 的本地化字符串。
+        /// </summary>
+        public static string SaveAs {
+            get {
+                return ResourceManager.GetString("SaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Show Image in New Window 的本地化字符串。
+        /// </summary>
+        public static string ShowImageInNewWindow {
+            get {
+                return ResourceManager.GetString("ShowImageInNewWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Show Property 的本地化字符串。
+        /// </summary>
+        public static string ShowProperty {
+            get {
+                return ResourceManager.GetString("ShowProperty", resourceCulture);
             }
         }
         

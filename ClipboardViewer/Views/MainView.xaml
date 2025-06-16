@@ -14,87 +14,93 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
-    <md:DialogHost Identifier="MainView">
-
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    <md:DialogHost Identifier="MainView"
+                   DialogTheme="Inherit">
+        <md:DrawerHost>
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="70" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid  Margin="0 0 5 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                <ToolBar ClipToBounds="True"
-                         Style="{StaticResource MaterialDesignToolBar}">
-                    <Button Content="{md:PackIcon Kind=ClipboardPlus}"
-                            Command="{Binding AddClipboardDataCommand}" />
-                    <Button Content="{md:PackIcon Kind=Broom}"
-                            Command="{Binding ClearClipboardDataCommand}" />
+                    <ToolBar ClipToBounds="True"
+                             Style="{StaticResource MaterialDesignToolBar}">
+                        <Button Content="{md:PackIcon Kind=ClipboardPlus}"
+                                Command="{Binding AddClipboardDataCommand}" />
+                        <Button Content="{md:PackIcon Kind=Broom}"
+                                Command="{Binding ClearClipboardDataCommand}" />
 
-                </ToolBar>
-                <ListBox Grid.Row="1"
-                         md:ScrollViewerAssist.IgnorePadding="True"
-                         md:ScrollViewerAssist.PaddingMode="Content"
-                         SelectedIndex="0"
-                         AlternationCount="9999"
-                         ItemsSource="{Binding ClipboardDataCollection}"
-                         SelectedItem="{Binding SelectedClipboardData}">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <yr:ReversibleStackPanel ReverseOrder="True"
-                                                     VerticalAlignment="Top" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <!--序号-->
-                                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=(ItemsControl.AlternationIndex)}"
-                                           Margin="4,0"
-                                           Width="30" />
+                    </ToolBar>
+                    <ListBox Grid.Row="1"
+                             md:ScrollViewerAssist.IgnorePadding="True"
+                             md:ScrollViewerAssist.PaddingMode="Content"
+                             SelectedIndex="0"
+                             AlternationCount="9999"
+                             ItemsSource="{Binding ClipboardDataCollection}"
+                             SelectedItem="{Binding SelectedClipboardData}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <yr:ReversibleStackPanel ReverseOrder="True"
+                                                         VerticalAlignment="Top" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!--序号-->
+                                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=(ItemsControl.AlternationIndex)}"
+                                               Margin="4,0"
+                                               Width="30" />
 
-                                <!--内容-->
-                                <TextBlock Text="{Binding CreateAt, StringFormat=HH:mm:ss.fff yyyy-MM-dd }" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
+                                    <!--内容-->
+                                    <TextBlock Text="{Binding CreateAt, StringFormat=HH:mm:ss.fff yyyy-MM-dd }" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+                <GridSplitter Grid.Column="0"
+                              HorizontalAlignment="Right"
+                              Width="5" />
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="120" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+                    <ListBox md:ScrollViewerAssist.IgnorePadding="True"
+                             md:ScrollViewerAssist.PaddingMode="Default"
+                             md:ScrollViewerAssist.ShowSeparators="False"
+                             md:ScrollViewerAssist.BubbleVerticalScroll="True"
+                             SelectedIndex="0"
+                             ItemsSource="{Binding SelectedClipboardData.Items}"
+                             SelectedItem="{Binding SelectedClipboardDataItem}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <md:Card Content="{Binding Format}"
+                                         Background="{Binding .,Converter={x:Static cv:ClipboardDataItemToBrushConverter.Instance}}"
+                                         Padding="5" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-                <ListBox md:ScrollViewerAssist.IgnorePadding="True"
-                         md:ScrollViewerAssist.PaddingMode="Default"
-                         md:ScrollViewerAssist.ShowSeparators="False"
-                         md:ScrollViewerAssist.BubbleVerticalScroll="True"
-                         SelectedIndex="0"
-                         ItemsSource="{Binding SelectedClipboardData.Items}"
-                         SelectedItem="{Binding SelectedClipboardDataItem}">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <md:Card Content="{Binding Format}"
-                                     Background="{Binding .,Converter={x:Static cv:ClipboardDataItemToBrushConverter.Instance}}"
-                                     Padding="5" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    <md:ColorZone Padding="8"
+                                  Grid.Row="1"
+                                  md:ElevationAssist.Elevation="Dp0"
+                                  DockPanel.Dock="Top"
+                                  Mode="Standard">
 
-                <GroupBox Grid.Row="1"
-                          md:ElevationAssist.Elevation="Dp16"
-                          BorderThickness="0">
-                    <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Format:"
                                    Padding="0" />
@@ -114,8 +120,8 @@
 
                         </StackPanel>
 
-                    </GroupBox.Header>
-                    <Grid>
+                    </md:ColorZone>
+                    <Grid Grid.Row="2">
                         <Grid.Resources>
                             <!-- 针对 string 的显示模板 -->
                             <DataTemplate x:Key="StringTemplateKey">
@@ -162,9 +168,8 @@
                         </Grid>
                     </Grid>
 
-                </GroupBox>
-
+                </Grid>
             </Grid>
-        </Grid>
+        </md:DrawerHost>
     </md:DialogHost>
 </UserControl>

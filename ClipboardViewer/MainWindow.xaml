@@ -45,9 +45,11 @@
                               IsChecked="{Binding IsDarkTheme}"
                               Style="{StaticResource MaterialDesignActionSecondaryToggleButton}" />
 
-                <Menu VerticalAlignment="Bottom"
-                      md:MenuAssist.TopLevelMenuItemHeight="25" Width="70">
-                    <MenuItem Foreground="White" Header="{Binding CurrentCultureLCID, Converter={x:Static cv:LCIDToStringConverter.Instance}}">
+                <Menu VerticalAlignment="Center"
+                      md:MenuAssist.TopLevelMenuItemHeight="25"
+                      Width="70">
+                    <MenuItem Foreground="White"
+                              Header="{Binding CurrentCultureLCID, Converter={x:Static cv:LCIDToStringConverter.Instance}}">
                         <MenuItem Command="{Binding ChangeCultureCommand}"
                                   CommandParameter="1033"
                                   Foreground="{DynamicResource MaterialDesignBody}"

@@ -5,23 +5,76 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ClipboardViewer.UserControls"
              xmlns:yr="https://github.com/yoi102/xaml/controls"
+             xmlns:r="clr-namespace:Resources;assembly=Resources"
+             xmlns:cv="clr-namespace:ClipboardViewer.Converters"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
     <Grid>
+        <StackPanel x:Name="PropertyPanel"
+                    Panel.ZIndex="1"
+                    Visibility="Hidden">
+
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Width：" />
+                <TextBlock x:Name="ImageWidthText"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Height：" />
+                <TextBlock x:Name="ImageHeightText"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+
+                <Label Content="DpiX：" />
+                <TextBlock x:Name="ImageDpiXText"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="DpiY：" />
+                <TextBlock x:Name="ImageDpiYText"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Format：" />
+                <TextBlock x:Name="ImageFormatText"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+
+        </StackPanel>
         <yr:ImageEx x:Name="ImageEx"
+                    Visibility="{Binding Source, RelativeSource={RelativeSource AncestorType=UserControl},Converter={x:Static cv:DefaultToVisibilityConverter.NotHiddenInstance}}"
                     ImageSource="{Binding Source, RelativeSource={RelativeSource AncestorType=UserControl}}"
                     RenderOptions.BitmapScalingMode="HighQuality">
             <yr:ImageEx.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Fit"
+                    <MenuItem Header="{I18N {x:Static r:LangKeys.Fit}}"
                               Click="Fit" />
-                    <MenuItem Header="Save Image As..."
+                    <MenuItem Header="{I18N {x:Static r:LangKeys.SaveAs}}"
                               Click="SaveAs" />
-                    <MenuItem Header="Show In Window"
+                    <MenuItem Header="{I18N {x:Static r:LangKeys.ShowImageInNewWindow}}"
                               Click="ShowInWindow" />
+                    <MenuItem Header="{I18N {x:Static r:LangKeys.ShowProperty}}"
+                              Click="ShowProperty" />
                 </ContextMenu>
             </yr:ImageEx.ContextMenu>
         </yr:ImageEx>
+        <Path x:Name="NoImagePath"
+              Visibility="{Binding Source, RelativeSource={RelativeSource AncestorType=UserControl},Converter={x:Static cv:DefaultToVisibilityConverter.HiddenInstance}}"
+              Data="M5,43 L43,5
+              M7,37 V13
+              A2,2 0 0 1 9,11 H17 L19,7 H29 L31,11 H39
+              A2,2 0 0 1 41,13 V33
+              A2,2 0 0 1 39,35 H11
+              A2,2 0 0 1 9,33 V31
+              M31,21 A7,7 0 1,0 17,21 A7,7 0 1,0 31,21"
+              Stroke="Gray"
+              StrokeThickness="2.5"
+              StrokeDashCap="Round"
+              Fill="Transparent"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center" />
+
     </Grid>
 </UserControl>
