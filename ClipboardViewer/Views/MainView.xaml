@@ -159,12 +159,12 @@
                                 <Label Content="Exception Type:" />
                                 <TextBox Margin="5 0 0 0"
                                          Text="{Binding SelectedClipboardDataItem.Error,Mode=OneWay,Converter={x:Static cv:ObjectTypeToStringConverter.Instance}}"
-                                         IsReadOnly="False" />
+                                         IsReadOnly="True" />
                             </StackPanel>
 
                             <TextBox Grid.Row="1"
                                      Text="{Binding SelectedClipboardDataItem.Error.Message,Mode=OneWay}"
-                                     IsReadOnly="False" />
+                                     IsReadOnly="True" />
                         </Grid>
                     </Grid>
 
