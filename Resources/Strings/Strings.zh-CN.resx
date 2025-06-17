@@ -153,7 +153,7 @@
   <data name="ShowImageInNewWindow" xml:space="preserve">
     <value>在新窗口中显示图片</value>
   </data>
-  <data name="ShowProperty" xml:space="preserve">
+  <data name="ShowProperties" xml:space="preserve">
     <value>显示属性 </value>
   </data>
   <data name="Source" xml:space="preserve">

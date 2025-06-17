@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ClipboardViewer.UserControls"
              xmlns:yr="https://github.com/yoi102/xaml/controls"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:r="clr-namespace:Resources;assembly=Resources"
              xmlns:cv="clr-namespace:ClipboardViewer.Converters"
              mc:Ignorable="d"
@@ -50,12 +51,16 @@
             <yr:ImageEx.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="{I18N {x:Static r:LangKeys.Fit}}"
+                              Icon="{md:PackIcon Kind=FitToScreenOutline}"
                               Click="Fit" />
                     <MenuItem Header="{I18N {x:Static r:LangKeys.SaveAs}}"
+                              Icon="{md:PackIcon Kind=ContentSaveOutline}"
                               Click="SaveAs" />
                     <MenuItem Header="{I18N {x:Static r:LangKeys.ShowImageInNewWindow}}"
+                              Icon="{md:PackIcon Kind=WindowRestore}"
                               Click="ShowInWindow" />
-                    <MenuItem Header="{I18N {x:Static r:LangKeys.ShowProperty}}"
+                    <MenuItem Header="{I18N {x:Static r:LangKeys.ShowProperties}}"
+                              Icon="{md:PackIcon Kind=Cog}"
                               Click="ShowProperty" />
                 </ContextMenu>
             </yr:ImageEx.ContextMenu>

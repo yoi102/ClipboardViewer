@@ -165,9 +165,9 @@
     <value>Show Image in New Window</value>
     <comment>Show Image in New Window</comment>
   </data>
-  <data name="ShowProperty" xml:space="preserve">
-    <value>Show Property</value>
-    <comment>Show Property</comment>
+  <data name="ShowProperties" xml:space="preserve">
+    <value>Show Properties</value>
+    <comment>Show Properties</comment>
   </data>
   <data name="Source" xml:space="preserve">
     <value>Source</value>

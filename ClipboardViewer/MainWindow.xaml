@@ -9,6 +9,7 @@
                  xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:r="clr-namespace:Resources;assembly=Resources"
                  xmlns:viewmodel="clr-namespace:ClipboardViewer.ViewModel;assembly=ClipboardViewer.ViewModel"
+                 xmlns:ass="clr-namespace:ClipboardViewer.Assists"
                  xmlns:cv="clr-namespace:ClipboardViewer.Converters"
                  xmlns:tm="clr-namespace:ClipboardViewer.TemplateSelectors"
                  d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
@@ -71,5 +72,10 @@
 
     <Grid>
         <view:MainView />
+        <md:Snackbar Margin="10"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Bottom"
+                     ass:SnackbarIdentifierAssist.SnackbarIdentifier="MainWindow"
+                     MessageQueue="{md:MessageQueue}" />
     </Grid>
 </mah:MetroWindow>

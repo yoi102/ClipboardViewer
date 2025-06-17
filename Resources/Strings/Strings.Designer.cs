@@ -169,11 +169,11 @@ namespace Resources.Strings {
         }
         
         /// <summary>
-        ///   查找类似 Show Property 的本地化字符串。
+        ///   查找类似 Show Properties 的本地化字符串。
         /// </summary>
-        public static string ShowProperty {
+        public static string ShowProperties {
             get {
-                return ResourceManager.GetString("ShowProperty", resourceCulture);
+                return ResourceManager.GetString("ShowProperties", resourceCulture);
             }
         }
         

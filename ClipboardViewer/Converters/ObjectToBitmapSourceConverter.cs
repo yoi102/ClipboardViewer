@@ -1,8 +1,10 @@
-﻿using System.Globalization;
+﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows.Data;
-using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace ClipboardViewer.Converters;
@@ -18,7 +20,15 @@ internal class ObjectToBitmapSourceConverter : IValueConverter
 
         // 已经是BitmapSource
         if (value is BitmapSource bitmapSource)
-            return bitmapSource;
+        {
+            var converted = new FormatConvertedBitmap(bitmapSource, PixelFormats.Bgr32, null, 0);
+            return converted;
+        }
+
+        if (value is System.Drawing.Imaging.Metafile metafile)
+        {
+            return MetafileToBitmapSource(metafile);
+        }
 
         // WriteableBitmap 也是BitmapSource的子类，无需特殊处理
         // 字节数组 byte[]
@@ -59,17 +69,7 @@ internal class ObjectToBitmapSourceConverter : IValueConverter
         // 支持 System.Drawing.Bitmap
         if (value is System.Drawing.Bitmap gdiBitmap)
         {
-            var hBitmap = gdiBitmap.GetHbitmap();
-            try
-            {
-                var bs = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                bs.Freeze();
-                return bs;
-            }
-            finally
-            {
-                NativeDeleteObject(hBitmap);
-            }
+            return BitmapToBitmapSource(gdiBitmap);
         }
         // 文件路径 string 或 Base64
         if (value is string str)
@@ -139,7 +139,7 @@ internal class ObjectToBitmapSourceConverter : IValueConverter
 
             // 读头部判断格式
             byte[] header = new byte[8];
-            stream.Read(header, 0, header.Length);
+            stream.ReadExactly(header);
             stream.Position = 0;
 
             // DIB (from clipboard): 没有标准图片格式头
@@ -204,6 +204,40 @@ internal class ObjectToBitmapSourceConverter : IValueConverter
             img.EndInit();
             img.Freeze();
             return img;
+        }
+    }
+
+    public static BitmapSource MetafileToBitmapSource(System.Drawing.Imaging.Metafile metafile)
+    {
+        var unit = GraphicsUnit.World;
+        // Metafile 的单位可能不是像素，所以要用 GetBounds
+        var bounds = metafile.GetBounds(ref unit);
+        int width = (int)Math.Ceiling(bounds.Width);
+        int height = (int)Math.Ceiling(bounds.Height);
+
+        // 这里指定格式为 Format32bppPArgb，兼容性最好
+        using (var bitmap = new Bitmap(width, height))
+        {
+            using (var g = Graphics.FromImage(bitmap))
+            {
+                g.Clear(System.Drawing.Color.Transparent);
+                // 一定要注意单位，这里用 bounds
+                g.DrawImage(metafile, new Rectangle(0, 0, width, height), bounds, unit);
+            }
+
+            return BitmapToBitmapSource(bitmap);
+        }
+    }
+
+    public static BitmapSource BitmapToBitmapSource(Bitmap bitmap)
+    {
+        using (var ms = new MemoryStream())
+        {
+            // 用PNG编码兼容性最好
+            bitmap.Save(ms, ImageFormat.Png);
+            ms.Position = 0;
+            var decoder = new PngBitmapDecoder(ms, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+            return decoder.Frames[0];
         }
     }
 }

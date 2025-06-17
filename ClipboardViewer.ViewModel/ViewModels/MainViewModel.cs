@@ -9,6 +9,7 @@ namespace ClipboardViewer.ViewModel.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly IClipboardService clipboardService;
+    private readonly ISnackbarService snackbarService;
 
     [ObservableProperty]
     private ObservableCollection<ClipboardData> clipboardDataCollection = [];
@@ -18,14 +19,16 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ClipboardDataItem? selectedClipboardDataItem;
 
-    public MainViewModel(IClipboardService clipboardService)
+    public MainViewModel(IClipboardService clipboardService, ISnackbarService snackbarService)
     {
         this.clipboardService = clipboardService;
+        this.snackbarService = snackbarService;
         AddClipboardData();
         clipboardService.ClipboardUpdated += async (sender, e) =>
         {
             await Task.Delay(600); // Delay to allow clipboard to stabilize
             AddClipboardData();
+            snackbarService.Enqueue("MainWindow", $"Updated at {DateTimeOffset.Now}");
         };
     }
 

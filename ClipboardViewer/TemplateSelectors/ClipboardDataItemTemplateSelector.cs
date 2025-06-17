@@ -22,15 +22,15 @@ internal class ClipboardDataItemTemplateSelector : DataTemplateSelector
 
         // 判断图片（BitmapSource 或 Drawing.Bitmap）
         if (content is System.Windows.Media.ImageSource ||
-            content is System.Windows.Media.Imaging.BitmapSource ||
-            content is System.Drawing.Bitmap)
+            content is System.Drawing.Bitmap ||
+            content is System.Drawing.Imaging.Metafile)
         {
             return ImageTemplate;
         }
 
         if (content is System.IO.Stream stream)
         {
-            if (IsImageStream(stream))
+            if (IsImageStream(stream)|| IsMetafileStream(stream))
             {
                 return ImageTemplate;
             }
@@ -140,4 +140,37 @@ internal class ClipboardDataItemTemplateSelector : DataTemplateSelector
 
         return false;
     }
+
+    public static bool IsMetafileStream(Stream stream)
+    {
+        if (stream == null || !stream.CanRead) return false;
+        long pos = stream.CanSeek ? stream.Position : 0;
+        try
+        {
+            byte[] header = new byte[8];
+            int read = stream.Read(header, 0, header.Length);
+            stream.Position = pos;
+            if (read >= 4)
+            {
+                // WMF: 0xD7 0xCD
+                if (header[0] == 0xD7 && header[1] == 0xCD)
+                    return true;
+                // EMF: 0x01 0x00 0x00 0x00 0x20 0x45 0x4D 0x46
+                if (read >= 8 &&
+                    header[0] == 0x01 && header[1] == 0x00 &&
+                    header[2] == 0x00 && header[3] == 0x00 &&
+                    header[4] == 0x20 && header[5] == 0x45 &&
+                    header[6] == 0x4D && header[7] == 0x46)
+                    return true;
+            }
+        }
+        catch { }
+        finally
+        {
+            if (stream.CanSeek)
+                stream.Position = pos;
+        }
+        return false;
+    }
+
 }

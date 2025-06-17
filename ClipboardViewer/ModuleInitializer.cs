@@ -13,5 +13,6 @@ internal class ModuleInitializer : IModuleInitializer
         services.AddTransient<IThemeSettingService, ThemeSettingService>();
         services.AddTransient<IDialogService, DialogService>();
         services.AddSingleton<IClipboardService, ClipboardService>();
+        services.AddSingleton<ISnackbarService, SnackbarService>();
     }
 }
