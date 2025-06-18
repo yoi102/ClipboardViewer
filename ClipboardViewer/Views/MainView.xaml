@@ -52,6 +52,11 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
+                                    <Border  x:Name="SelectedBorder"
+                                             Visibility="Hidden"
+                                             Background="{DynamicResource MaterialDesign.Brush.Primary.Light}"
+                                             CornerRadius="2"
+                                             Width="2" />
                                     <!--序号-->
                                     <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=(ItemsControl.AlternationIndex)}"
                                                Margin="4,0"
@@ -60,6 +65,14 @@
                                     <!--内容-->
                                     <TextBlock Text="{Binding CreateAt, StringFormat=HH:mm:ss.fff yyyy-MM-dd }" />
                                 </StackPanel>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                 Value="True">
+                                        <Setter TargetName="SelectedBorder"
+                                                Property="Visibility"
+                                                Value="Visible" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -88,9 +101,27 @@
                         </ListBox.ItemsPanel>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <md:Card Content="{Binding Format}"
-                                         Background="{Binding .,Converter={x:Static cv:ClipboardDataItemToBrushConverter.Instance}}"
-                                         Padding="5" />
+                                <Grid>
+                                    <Border  x:Name="SelectedBorder"
+                                             Padding="0"
+                                             Margin="0"
+                                             Visibility="Hidden"
+                                             Background="{DynamicResource MaterialDesign.Brush.Primary.Light}"
+                                             CornerRadius="2" />
+                                    <md:Card Margin="1.5"
+                                             Panel.ZIndex="1"
+                                             Content="{Binding Format}"
+                                             Background="{Binding .,Converter={x:Static cv:ClipboardDataItemToBrushConverter.Instance}}"
+                                             Padding="5" />
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                 Value="True">
+                                        <Setter TargetName="SelectedBorder"
+                                                Property="Visibility"
+                                                Value="Visible" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

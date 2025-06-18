@@ -39,7 +39,7 @@ public partial class MainViewModel : ObservableObject
         {
             if (SetProperty(ref selectedClipboardData, value))
             {
-                SelectedClipboardDataItem = SelectedClipboardData?.Items?.LastOrDefault();
+                SelectedClipboardDataItem = SelectedClipboardData?.Items?.FirstOrDefault();
             }
         }
     }
