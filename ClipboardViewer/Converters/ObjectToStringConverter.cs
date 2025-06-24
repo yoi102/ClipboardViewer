@@ -12,7 +12,10 @@ internal class ObjectToStringConverter : IValueConverter
     {
         if (value is null)
             return value;
-
+        if (value is string stringValue)
+        {
+            return stringValue;
+        }
 
         if (value is IEnumerable enumerable)
         {
