@@ -1,4 +1,5 @@
-﻿using Commons.Extensions;
+﻿using ClipboardViewer.Services;
+using Commons.Extensions;
 using Commons.Helpers;
 using Commons.Services;
 using ExceptionHandling;
@@ -114,6 +115,8 @@ public partial class App : Application
         services.RunModuleInitializers(assemblies);
 
         services.RegisterHandlers(assemblies);
+
+        services.AddSingleton<IWindowTrackService>(new WindowTrackService());
 
         return services.BuildServiceProvider();
     }

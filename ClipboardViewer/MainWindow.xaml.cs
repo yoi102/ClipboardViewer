@@ -1,4 +1,5 @@
-﻿using ClipboardViewer.ViewModel;
+﻿using ClipboardViewer.Services;
+using ClipboardViewer.ViewModel;
 using Commons.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
@@ -15,7 +16,6 @@ public partial class MainWindow
     {
         InitializeComponent();
         this.DataContext = App.Current.Services.GetService<MainWindowViewModel>();
-        WindowTracker.Register(this);
         Closing += OnWindowClosing;
     }
 
@@ -45,6 +45,5 @@ public partial class MainWindow
     private void IconClicked(object sender, System.Windows.RoutedEventArgs e)
     {
         Process.Start(new ProcessStartInfo("https://github.com/yoi102/ClipboardViewer") { UseShellExecute = true });
-
     }
 }

@@ -9,6 +9,13 @@ namespace ClipboardViewer.Services;
 
 internal class DialogService : IDialogService
 {
+    private readonly IWindowTrackService windowTrackService;
+
+    public DialogService(IWindowTrackService windowTrackService)
+    {
+        this.windowTrackService = windowTrackService;
+    }
+
     public IDisposable ShowProgressBarDialog(object dialogIdentifier)
     {
         var dialogSession = DialogHost.GetDialogSession(dialogIdentifier);
@@ -47,11 +54,7 @@ internal class DialogService : IDialogService
 
     public async Task ShowOrReplaceMessageInActiveWindowAsync(string header, string message)
     {
-        var activeWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive);
-        activeWindow ??= WindowTracker.LastActivatedWindow;
-        activeWindow ??= Application.Current.MainWindow;
-        if (activeWindow is null)
-            return;
+        var activeWindow = windowTrackService.LastActivatedWindow;
 
         var dialogHost = GetFirstDialogHost(activeWindow);
         if (dialogHost is null)
@@ -78,11 +81,7 @@ internal class DialogService : IDialogService
 
     public async Task<bool> ShowExitConfirmation()
     {
-        var activeWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive);
-        activeWindow ??= WindowTracker.LastActivatedWindow;
-        activeWindow ??= Application.Current.MainWindow;
-        if (activeWindow is null)
-            return false;
+        var activeWindow = windowTrackService.LastActivatedWindow;
 
         var dialogHost = GetFirstDialogHost(activeWindow);
         if (dialogHost is null)
